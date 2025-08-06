@@ -19,6 +19,10 @@
                                                         row_condition
                                                         ) -%}
 
+{%- if value is none -%}
+    {% do exceptions.raise("❌ Missing required `value:` argument in `expect_table_row_count_to_equal`.") %}
+{%- endif -%}
+
 {%- set where_clause -%}
     {%- if row_condition -%}
         where {{ row_condition }}
