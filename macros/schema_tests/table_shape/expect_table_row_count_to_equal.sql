@@ -35,8 +35,8 @@
 {{ config(
     severity=severity,
     fail_calc=fail_calc,
-    warn_if=warn_if or '',
-    error_if=error_if or ''
+    warn_if=warn_if,
+    error_if=error_if
 ) }}
 
 {%- if value is none or value | string | trim == '' -%}
