@@ -1,23 +1,43 @@
 {%- test expect_table_row_count_to_equal(model,
                                             value,
                                             group_by=None,
-                                            row_condition=None
+                                            row_condition=None,
+                                            severity='error',
+                                            warn_if=None,
+                                            error_if=None,
+                                            fail_calc='count(*)'
                                             ) -%}
     {{ adapter.dispatch('test_expect_table_row_count_to_equal',
-                        'dbt_expectations') (model,
-                                                value,
-                                                group_by,
-                                                row_condition
-                                                ) }}
-{% endtest %}
+                        'dbt_expectations') (
+                            model,
+                            value,
+                            group_by,
+                            row_condition,
+                            severity,
+                            warn_if,
+                            error_if,
+                            fail_calc
+                        ) }}
+{%- endtest %}
 
 
 
 {%- macro default__test_expect_table_row_count_to_equal(model,
                                                         value,
                                                         group_by,
-                                                        row_condition
+                                                        row_condition,
+                                                        severity,
+                                                        warn_if,
+                                                        error_if,
+                                                        fail_calc
                                                         ) -%}
+
+{{ config(
+    severity=severity,
+    fail_calc=fail_calc,
+    warn_if=warn_if,
+    error_if=error_if
+) }}
 
 {%- if value is none or value | string | trim == '' -%}
     {% do exceptions.raise("❌ Missing required `value:` argument in `expect_table_row_count_to_equal`.") %}
