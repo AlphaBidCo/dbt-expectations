@@ -5,7 +5,7 @@
                                             severity='error',
                                             warn_if=None,
                                             error_if=None,
-                                            fail_calc='count(*)'
+                                            fail_calc='actual_row_count'
                                             ) -%}
     {{ adapter.dispatch('test_expect_table_row_count_to_equal',
                         'dbt_expectations') (
@@ -65,7 +65,7 @@ aggregated as (
     select
         count(*) as actual_row_count,
         {{ value }} as expected_row_count,
-        count(*) != {{ value }} as test_failed
+        (count(*) != {{ value }}) as test_failed
     from base
     {{ group_by_clause }}
 )
