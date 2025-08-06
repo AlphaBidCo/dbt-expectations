@@ -64,18 +64,12 @@ with base as (
 aggregated as (
     select
         count(*) as actual_row_count,
-        {{ value }} as expected_row_count
+        {{ value }} as expected_row_count,
+        count(*) != {{ value }} as test_failed
     from base
     {{ group_by_clause }}
-),
-
-failures as (
-    select *
-    from aggregated
-    where actual_row_count != expected_row_count
 )
 
 select *
-from failures
-
+from aggregated
 {%- endmacro -%}
