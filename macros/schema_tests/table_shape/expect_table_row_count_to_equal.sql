@@ -32,12 +32,15 @@
                                                         fail_calc
                                                         ) -%}
 
-{{ config(
-    severity=severity,
-    fail_calc=fail_calc,
-    warn_if=warn_if,
-    error_if=error_if
-) }}
+{{ config(severity=severity, fail_calc=fail_calc) }}
+
+{# add optional predicates only when they are non-empty strings #}
+{% if warn_if is not none and warn_if | trim != '' %}
+    {{ config(warn_if=warn_if) }}
+{% endif %}
+{% if error_if is not none and error_if | trim != '' %}
+    {{ config(error_if=error_if) }}
+{% endif %}
 
 {%- if value is none or value | string | trim == '' -%}
     {% do exceptions.raise("❌ Missing required `value:` argument in `expect_table_row_count_to_equal`.") %}
