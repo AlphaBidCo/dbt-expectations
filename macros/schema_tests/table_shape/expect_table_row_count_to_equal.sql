@@ -19,7 +19,7 @@
                                                         row_condition
                                                         ) -%}
 
-{%- if value is none -%}
+{%- if value is none or value | string | trim == '' -%}
     {% do exceptions.raise("❌ Missing required `value:` argument in `expect_table_row_count_to_equal`.") %}
 {%- endif -%}
 
